@@ -1,0 +1,11 @@
+{
+    "name" : "login/mvc",
+        "autoload":{
+            "psr-4":{
+                "app\\" : "app/"
+            },
+            "files": [
+                "app/config/template.html"
+            ]
+        }
+}
