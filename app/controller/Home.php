@@ -2,7 +2,10 @@
 
 namespace app\controller;
 
-class Home{
+use \app\controller\Login;
+use \app\controller\Admin;
+
+class Home extends Admin{
 
     public function index(){
 
@@ -15,13 +18,54 @@ class Home{
     }
 
     public function home(){
-
-        if(session_status() == PHP_SESSION_ACTIVE){
+        
+            Login::requireLogin();
+            $usuarioLogado = Login::getUsuarioLogado();
+            $usuario = $usuarioLogado['nome'];
             require_once __DIR__ . '/../view/home/home.html';
-        }else{
-            require_once __DIR__ . '/../view/login/login.html';
-        }
-
+        
     }
+
+    public function cadastrar(){
+        
+            Login::requireLogin();
+            $usuarioLogado = Login::getUsuarioLogado();
+            $usuario = $usuarioLogado['nome'];
+            require_once __DIR__ . '/../view/admin/cadastro.html';
+        
+    }
+
+    public function consultar(){
+        
+        Login::requireLogin();
+        $usuarioLogado = Login::getUsuarioLogado();
+        $usuario = $usuarioLogado['nome'];
+        $consulta = $this->showList();
+        require_once __DIR__ . '/../view/admin/consulta.html';
+    
+    }
+
+    public function editar($id){
+        
+        Login::requireLogin();
+        $usuarioLogado = Login::getUsuarioLogado();
+        $usuario = $usuarioLogado['nome'];
+        $editarDados = $this->showEdit($id);
+        require_once __DIR__ . '/../view/admin/alterar.html';
+    
+    }
+
+    public function deletar($id){
+        
+        Login::requireLogin();
+        $usuarioLogado = Login::getUsuarioLogado();
+        $usuario = $usuarioLogado['nome'];
+        $deletarDados = $this->showEdit($id);
+        require_once __DIR__ . '/../view/admin/excluir.html';
+    
+    }
+
+    
+
     
 }

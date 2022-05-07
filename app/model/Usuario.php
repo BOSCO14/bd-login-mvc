@@ -2,14 +2,17 @@
 
 namespace app\model;
 
+use app\controller\Login;
 use \app\lib\database\Connection;
 
 class Usuario{
 
     public static function validate(){
 
-        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-        $senha = filter_input(INPUT_POST, 'senha', FILTER_SANITIZE_SPECIAL_CHARS);
+        //$email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+        //$senha = filter_input(INPUT_POST, 'senha', FILTER_SANITIZE_SPECIAL_CHARS);
+        $email = $_POST['email'];
+        $senha = $_POST['senha'];
 
         $con = Connection::getConn();
 
@@ -24,15 +27,16 @@ class Usuario{
         if($count == 1){
             $result = $login->fetch();
             //foreach ($result as $row) {
-            $password = $result['senha'];
-            $user_id = $result['id'];
-            $user_name = $result['nome'];
-            $user_email = $result['email'];
+              $user_pass = $result['senha'];
+              $user_id = $result['id'];
+              $user_name = $result['nome'];
+              $user_email = $result['email'];
             //}
-            if($password == password_verify($senha, $password)){
-                session_start();
-                $_SESSION['id_usuario'] = $user_id;
-                $_SESSION['nome_usuario'] = $user_name;
+            if(password_verify($senha, $user_pass)){
+                //session_start();
+                //$_SESSION['id_usuario'] = $user_id;
+                //$_SESSION['nome_usuario'] = $user_name;
+                Login::login($user_id, $user_name, $user_email);
                 return true;
             } else {
                 throw new \Exception("Senha Inválida");
@@ -40,7 +44,7 @@ class Usuario{
             }
         }else{
             throw new \Exception("E-mail Inválido");
-            return false;  
+            return false;
         }
     }
 
