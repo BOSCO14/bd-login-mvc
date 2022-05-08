@@ -6,7 +6,7 @@ abstract class Connection{
 
     private static $host = 'localhost';
     private static $username = 'root';
-    private static $password = 'jb141081';
+    private static $password = '';
     private static $dbname = 'login_db';
     private static $conn;
 
